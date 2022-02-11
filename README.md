@@ -1,4 +1,4 @@
-# nix-repl-setup
+# nixos-repl-setup
 
 This is a small utility that defines a payload, that, when loaded in your nix repl session, will prepopulate useful variables from your NixOS configuration
 
@@ -28,8 +28,8 @@ Flake-only arguments:
 Save this as an easily accesible file (e.g. `~/repl.nix`):
 
 ```nix
-let nix-repl-setup = builtins.getFlake "github:schuelermine/nix-repl-setup/ce5bc68652d489ebeccb6cd867b4a2c7ce669da3";
-in nix-repl-setup.repl-setup {
+let nixos-repl-setup = builtins.getFlake "github:schuelermine/nixos-repl-setup/ce5bc68652d489ebeccb6cd867b4a2c7ce669da3";
+in nixos-repl-setup.repl-setup {
     hostname = "GigueMowHeadGrape";
     source = "git+file:///etc/nixos/";
     isUrl = true;
