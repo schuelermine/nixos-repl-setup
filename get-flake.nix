@@ -1,5 +1,5 @@
 with builtins;
-file: args@{ hostname ? null, passInputs ? [ "nixpkgs" [ "nixpkgs" "lib" ] ], ... }:
+file: args@{ hostname ? null, passExtra ? [ [ "inputs" "nixpkgs" ] [ "nixpkgs" "lib" ] ], ... }:
 let
   gk = import ./getKeysSafe.nix;
   flake = getFlake file;
@@ -11,5 +11,5 @@ let
 in
 { inherit flake system; } //
 gk flake [ "inputs" "outputs" "sourceInfo" ] //
-gk flake.inputs passInputs //
+gk flake passExtra //
 gk system [ "pkgs" "config" "options" ]

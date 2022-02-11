@@ -1,5 +1,5 @@
 with builtins;
-file: args@{ ... }:
+file: args@{ passExtra ? [ [ "pkgs" "lib" ] ] }:
 let
   gk = import ./getKeysSafe.nix;
   module = import file;
@@ -11,4 +11,5 @@ let
       { configuration = file; };
 in
 { inherit module system; } //
+gk system passExtra //
 gk system [ "pkgs" "config" "options" ]
