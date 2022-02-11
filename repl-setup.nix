@@ -1,6 +1,6 @@
-with builtins;
+let self = with builtins;
 args@{ source ? "/etc/nixos", ... }:
-let
+let vars = rec {
   errors = mapAttrs (k: v: throw v) {
     sourceDoesNotExist =
       "The source file or directory '${source}' does not exist.";
@@ -30,10 +30,13 @@ let
     else if dirContent ? "flake.nix" then "flake"
     else "legacy";
   targetFile = if type == "flake" then dirOf checkedFile else checkedFile;
+};
 in
+with vars;
 import {
   flake = ./get-flake.nix;
   legacy = ./get-legacy.nix;
 }.${type}
   targetFile
-  args
+  args // { setupVars = { inherit self; } // vars; };
+in self
