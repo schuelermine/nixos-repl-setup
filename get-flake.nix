@@ -1,14 +1,15 @@
-file: args@{ ... }:
+with builtins;
+file: args@{ hostname ? null, passInputs ? [ "nixpkgs" [ "nixpkgs" "lib" ] ] }:
 let
-  module = import ./file;
+  gk = import ./getKeysSafe.nix;
+  flake = getFlake file;
   system =
-    import /${
-        let attempt = tryEval <nixos>; in
-        if attempt.success then attempt.value else <nixpkgs>
-      }/nixos
-      { configuration = file; };
+    let systems = flake.nixosConfigurations; in
+    if hostname == null
+    then systems.${head (attrNames flake.nixosConfigurations)}
+    else systems.${hostname};
 in
-{
-  inherit module system;
-  inherit (system) pkgs config options;
-}
+{ inherit flake system; } //
+gk flake [ "inputs" "outputs" "sourceInfo" ] //
+gk flake.inputs passInputs //
+gk system [ "pkgs" "config" "options" ]

@@ -21,7 +21,7 @@ let
   dir = if isDir then source else parentDir;
   dirContent = readDir dir;
   mkTarget = name: if isDir then "${source}/${name}" else source;
-  targetFile = mkTarget {
+  checkedFile = mkTarget {
     flake = "flake.nix";
     legacy = if dir ? "configuration.nix" then "configuration.nix" else "default.nix";
   }.${type};
@@ -29,6 +29,7 @@ let
     if baseName == "default.nix" || baseName == "configuration.nix" then "legacy"
     else if dirContent ? "flake.nix" then "flake"
     else "legacy";
+  targetFile = if type == "flake" then dirOf checkedFile else checkedFile;
 in
 import {
   flake = ./get-flake.nix;
