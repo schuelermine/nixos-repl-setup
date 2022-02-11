@@ -2,7 +2,7 @@ with builtins;
 file: args@{ ... }:
 let
   gk = import ./getKeysSafe.nix;
-  module = import ./file;
+  module = import file;
   system =
     import /${
         let attempt = tryEval <nixos>; in
