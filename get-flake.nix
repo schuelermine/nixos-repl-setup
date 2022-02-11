@@ -1,5 +1,5 @@
 with builtins;
-file: args@{ hostname ? null, passExtra ? [ [ "inputs" "nixpkgs" ] [ "nixpkgs" "lib" ] ], ... }:
+file: args@{ hostname ? null, passExtra ? [ [ "inputs" "nixpkgs" ] [ "inputs" "nixpkgs" "lib" ] ], ... }:
 let
   gk = import ./getKeysSafe.nix;
   flake = getFlake file;

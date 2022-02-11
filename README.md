@@ -12,9 +12,12 @@ It takes these arguments:
 - `isUrl`: Whether `source` is a flake URL  
   If this is unset, most URLs will fail
 - `plainImport`: Whether to disregard `flake.nix` and always use import
-- `passExtra`: A list of extra attributes to pass through  
+- `passExtra`: A list of attributes to pass through  
   This uses a special format to navigate attrsets. A string will be interpreted as an attribute, a list of attributes as an attribute path, and a list of a string and another list as a renamed attribute path.  
-  If you’re using a flake this is with respect to the flake itself. If not, with respect to the configuration (called `system`).
+  If you’re using a flake this is with respect to the flake itself. If not, with respect to the configuration (called `system`).  
+  By default, flakes passthrough `inputs.nixpkgs`, and `inputs.nixpkgs.lib`.
+  By default, non-flakes passthrough `pkgs.lib`.
+  (`pkgs` is always passed)
 
 Flake-only arguments:
 
@@ -30,5 +33,6 @@ in nix-repl-setup.repl-setup {
     hostname = "GigueMowHeadGrape";
     source = "git+file:///etc/nixos/";
     isUrl = true;
+    passExtra = [ [ "l" [ "inputs" "nixpkgs" "lib" ] ] [ "inputs" "MyFlake" "fubar" "egg" ] ];
 }
 ```
