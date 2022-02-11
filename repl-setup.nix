@@ -18,12 +18,12 @@ let vars = rec {
       errors.symlinksNotSupported
     else
       sourceType == "directory";
-  dir = if isDir then source else parentDir;
-  dirContent = readDir dir;
+  directory = if isDir then source else parentDir;
+  dirContent = readDir directory;
   mkTarget = name: if isDir then "${source}/${name}" else source;
   checkedFile = mkTarget {
     flake = "flake.nix";
-    legacy = if dir ? "configuration.nix" then "configuration.nix" else "default.nix";
+    legacy = if directory ? "configuration.nix" then "configuration.nix" else "default.nix";
   }.${type};
   type =
     if baseName == "default.nix" || baseName == "configuration.nix" then "legacy"
@@ -38,5 +38,5 @@ import {
   legacy = ./get-legacy.nix;
 }.${type}
   targetFile
-  args // { setupVars = { inherit self; } // vars; };
+  args // { setupVars = { inherit self args; } // removeAttrs vars [ "errors" "parentDirContent" ]; };
 in self
