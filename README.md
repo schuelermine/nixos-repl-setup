@@ -36,3 +36,11 @@ in nixos-repl-setup.repl-setup {
     passExtra = [ [ "l" [ "inputs" "nixpkgs" "lib" ] ] [ "inputs" "MyFlake" "fubar" "egg" ] ];
 }
 ```
+
+You can also clone the repository and use the folder directly.  
+For instance, I have this in `~/repl.nix`:
+
+```nix
+let repl-setup = import ./Code/nixos-repl-setup;
+in repl-setup { source = "git+file:///etc/nixos"; isUrl = true; } // builtins
+```
