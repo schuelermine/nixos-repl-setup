@@ -1,5 +1,5 @@
 with builtins;
-file: args@{ passExtra ? [ [ "pkgs" "lib" ] ] }:
+file: args@{ passExtra ? [ [ "pkgs" "lib" ] ], ... }:
 let
   gk = import ./getKeysSafe.nix;
   module = import file;
